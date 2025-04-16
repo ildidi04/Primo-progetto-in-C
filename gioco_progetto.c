@@ -1034,7 +1034,7 @@ void stampaMappa(){
                 n=0;
                 while(n<numeroNemici+1 && personaggio==false){ //ciclo che controlla che un personaggio(nemico o giocatore)si trovi nelle cordinate i j esime
                     if(i==nemici[n].pos.r && j==nemici[n].pos.c && nemici[n].vita>0){ //se un nemico vivo si trova in entrambe le cordinate attuali
-                        printf("  N  ");//allora lo stampo con N
+                        printf("  E  ");//allora lo stampo con N
                         personaggio=true;// e uso la variabile flag personaggio per dire di non stampare altri caratteri per la stessa cordinata
                     }else if(giocatore->pos.r==i && giocatore->pos.c==j){
                         printf("  *  ");
