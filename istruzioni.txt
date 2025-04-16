@@ -1,0 +1,13 @@
+WELCOME TO KILL ALL ENEMIES!
+The goal of this simple game as you can assume from the title is killing all the enemies, you win each mode after you killed all the enemies; 
+to do that you have make a path that points above the enemy. Be Careful to the warnings that will eventually appear because if you want to fight 
+an enemy and you are close to other you have to face everyone.
+For this reasons to help you make it there are scattered throughout the map hidden heals/medications and weapon boosters/enhancers that will
+increase your chances of winning each fight with an enemy.
+If you kill the enemy you can type the command "sub" and if you are over the enemy's cell you can switch your weapon with the enemy's one.
+Choose a mode from 1 to 3, type 1 for easy, 2 for medium and 3 for hard; once you have chosen the mode press the key enter and type your name 
+that will be also your player's name. 
+IMPORTANT NOTES: 
+-if you dont remember all the controls while you are playing  type l or L(standing for Legend).
+-Press key enter/send after each control/command you do.
+ENJOY!

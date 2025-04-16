@@ -1,0 +1,27 @@
+LEGEND
+___________________________________________________________________
+-enemies loot:    ' / '						   |										
+-Obstacles:         X						   |												
+-Enemies: 	    E						   |												
+-player(you): 	    *						   |
+___________________________________________________________________|	
+
+COMMANDS/CONTROLS
+________________________________________________________________________________________________________________________________________________
+-Commands to move your player (*) in the map:													|
+	.Turn Right:>					     											|
+	.Turn Left:<  					     											|
+	.Go Up:^      					     											|
+	.Go Down:v    					     											|
+-Legend:L/(you can execute this command everywhere to open all this page);									|
+-to check all the items founded open your backpack typing:"bp","backpack" or "back pack" and :							|
+	.to select the item's type cure digit: "med", "medication", "hb", "health", "health booster","cure"}					|
+	 (example:Med 15);															|
+	.to select the item's type weapon booster digit: "weapon", "we", "weapon booster", "weapon enhancer", "wb","wp"}			|	
+	  (example:WE 15, W 16, Weapon 20);													|
+	     																	|	
+-Once you have killed an enemy you can take his weapon with the commands:"sub","switch","swap","sw"						|																							|
+-If you are stuck and need some help type "hint", "h" or "advice" to receive some advices 							| 																							|
+-QUIT THE GAME:Q/Quit/Exit															|																							|
+*Note each command is case insensitive(sub or sUB are both acceptable)          								|
+_______________________________________________________________________________________________________________________________________________	|
