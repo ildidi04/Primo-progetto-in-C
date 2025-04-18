@@ -49,7 +49,7 @@ TipoOggetto getInputItemType(char*command); //understand if the user asked for a
 int getInputItemValue(char*command); //get the value of the item the user asked for
 void printWarnings();//this warnings are printed if the health is low and/or the weapon is weak
 void checkWeapons();// if the weapons of the player and enemies are under 0 of power they are going to be reset to 0
-
+void freeAll(); //deallocatte all the dynamic memory allocated of this match
 int main(){
     char answernewGame[20]; //ask the player if wants to play another match
     bool askAgain=true; // in case the player types bad his decision to play the new match or not
@@ -202,9 +202,25 @@ int main(){
         }
         if(newGame==false){
             printDisegno(disegno[GAMEOVER],0);//stampa game over in ascii art, 0 per dire stampa il disegno intero
+        }else{ //if there is a new match we need to deallocate all the memory allocated dynamically
+            freeAll(); 
         }
     }
     return 0;
+}
+
+void freeAll(){
+    for(int i=0;i<righe;i++){
+        free(*(mappa+i));//deallocate each row of integers
+    }
+    free(mappa);//deallocate the array of pointers to each row of integers
+    Item* head=giocatore->zaino;
+    Item*aus;
+    while(head!=NULL){
+        aus=head->next;
+        free(head); //deallocate each Item in the backpack
+        head=aus;
+    }
 }
 
 void checkWeapons(){
