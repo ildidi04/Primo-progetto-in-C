@@ -85,7 +85,6 @@ int main(){
             if(executeCommand(percorso)==1){}//se è stato eseguito un comando
             else if(executeCommand(percorso)==0){ //se è stato richiesto uno spostamento
                 while(contSegno<lunPercorso && move==0 && sopravvisuto==true){ //esco dal ciclo se ho finito il percorso, incontro un ostacolo o muoio
-                    giocatore->vita--; //for each movement the player decrease 1 life's point
                     if(giocatore->vita<=0){
                         system(CLEAR_SCREEN);
                         printf("You did too many steps, you just died, the next time be more careful when you choose the paths!\n");
@@ -152,6 +151,7 @@ int main(){
                             SLEEP(2000); // prima di pulire lo schermo faccio una pausa di n secondi di modo da dare il tempo all'utente di leggere cosa è avvenuto durante lo spostamento
                         }
                         if(move!=-2){
+                            giocatore->vita--; //for each movement the player decrease 1 life's point
                             system(CLEAR_SCREEN);
                             stampaMappa();
                             if(lunPercorso>1){
@@ -765,6 +765,7 @@ bool printOggettiZaino(Item*zaino){
     Item*aus=zaino; //salvo l'indirizzo del primo Item
     if(zaino==NULL){
         printf("Backpack empty.\n");
+        Sleep(1500);
         return false;
     }
     else{//codice sotto da metterci dentro
