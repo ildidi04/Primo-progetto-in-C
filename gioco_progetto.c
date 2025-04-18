@@ -72,8 +72,8 @@ int main(){
         bool sopravvisuto=true;
         OggettoUnion obj[numero_armi+numero_cure];//tutti gli oggetti da raccogliere
         int conta=0;
+        stampaMappa();
         while(sopravvisuto==true && warnings.nemiciRimasti>0 ){
-            stampaMappa();
             printf("[:]>   ");
             percorso=inserisciPercorso(percorso);
             int contSegno=0;
@@ -84,9 +84,12 @@ int main(){
             warnings.close_enemies=false;
             if(executeCommand(percorso)==1){}//se è stato eseguito un comando
             else if(executeCommand(percorso)==0){ //se è stato richiesto uno spostamento
-                while(contSegno<lunPercorso && move==0 && sopravvisuto==true){
+                while(contSegno<lunPercorso && move==0 && sopravvisuto==true){ //esco dal ciclo se ho finito il percorso, incontro un ostacolo o muoio
                     giocatore->vita--; //for each movement the player decrease 1 life's point
                     if(giocatore->vita<=0){
+                        system(CLEAR_SCREEN);
+                        printf("You did too many steps, you just died, the next time be more careful when you choose the paths!\n");
+                        Sleep(3500);
                         sopravvisuto=false;
                     }else{
                         warnings.numNemiciVicini=0;
@@ -95,7 +98,7 @@ int main(){
                         if(warnings.numNemiciVicini>0){
                             warnings.close_enemies=true;
                         }
-                        if(move==4){//se c'è un nemicio nella celle dove si vuole spostare il giocatore (4
+                        if(move==4){//se c'è un nemico nella celle dove si vuole spostare il giocatore (4
                             int nemiciAffrontati=0;
                             if(warnings.numNemiciVicini>1){
                                 printf("If you want to proceed in that direction you have to face all the %d enemies close !\n",warnings.numNemiciVicini);
@@ -122,9 +125,7 @@ int main(){
                                 warnings.close_enemies=false; //quindi nemici vicini diventa false
                             }
                         }
-                        if(move==0){ //se non ci sono impedenze salvo la mossa e controllo se ci sono oggetti da raccogliere
-                            //salvaMossa(&percorso[contSegno]);
-                
+                        if(move==0){ //se non ci sono impedenze  controllo se ci sono oggetti da raccogliere
                             itemRaccolto=false;
                             if(oggettoPresente()==2){ // se l'oggetto è una cura
                                 obj[numOggettiRaccolti].cura=(Cura*)returnOggetto(TIPO_CURA); //ritorna dove si trova l'oggetto cura in memoria(nell'array di cura)
@@ -150,17 +151,25 @@ int main(){
                         if(move!=0 || itemRaccolto==true){ //se  ci sono ostacoli/nemici oppure ho raccolto qualche oggetto
                             SLEEP(2000); // prima di pulire lo schermo faccio una pausa di n secondi di modo da dare il tempo all'utente di leggere cosa è avvenuto durante lo spostamento
                         }
+                        if(move!=-2){
+                            system(CLEAR_SCREEN);
+                            stampaMappa();
+                            if(lunPercorso>1){
+                                Sleep(700);
+                            }
+                        }
                     }
                 }
-            }else if(executeCommand(percorso)==-1){
+            }else if(executeCommand(percorso)==-1){ //if the user wants to quit the game
                 printf("Quitting the game...\n");
                 sopravvisuto=false;
                 Sleep(1000);
             }
-            system(CLEAR_SCREEN); // Pulisce lo schermo
-            //salvaMossa("\n"); 
+            system(CLEAR_SCREEN); // Pulisce lo schermo 
+            stampaMappa();
             conta++;
         }
+        
         if(sopravvisuto==true){
             printf("Congratulations! You have passed the ");
             if(modalità==1){
@@ -424,10 +433,10 @@ void printGiocatore(int nrsg){
         printf("  \t\t ");
     }else if(nrsg==3){
         printf("|life's points:%d",giocatore->vita);
-        printf("  Number of Items collected:%d    ",numOggettiRaccolti);
+        printf("  Number of Items collected:%d",numOggettiRaccolti);
     }else if(nrsg==4){
         printf("|Type of weapon:%s     ",giocatore->arma.nome_arma);
-        printf("  Weapon's Power:%d        ",giocatore->arma.potenza);
+        printf("Weapon's Power:%d   ",giocatore->arma.potenza);
     }
 
 
@@ -606,6 +615,8 @@ int spostati(char direction){
     }else if(direction=='v'){
         spostaRiga=1;
         spostaColonna=0;
+    }else{
+        return -2; //non è un comando valido per spostarsi
     }
     if(gr+spostaRiga<0 || gc+spostaColonna>=colonne+1 || gr+spostaRiga>righe-1||gc+spostaColonna<1){ //se esco dal campo
         return -1;
@@ -657,9 +668,9 @@ Giocatore* generaGiocatore(int**mappa){
     int randomArma =rand() % 2; // Valore tra 0 e 1
     giocatore->arma.nome_arma=nomi_armi[randomArma]; //assegno il nome dell'arma
     if(randomArma==0){//se l'arma è un coltello
-        giocatore->arma.potenza=15; //le assegno una potenza fissa di 15
+        giocatore->arma.potenza=25; //le assegno una potenza fissa di 25
     }else if(randomArma==1){//se l'arma è una spada
-        giocatore->arma.potenza=PotenzaArma;
+        giocatore->arma.potenza=25;
     }
     do{
         cellaOccupata=false;
@@ -935,9 +946,9 @@ Nemico* generaNemici(int ** mappa){
         randomArma =rand() % 2; // Valore random tra 0 e 1
         nemici[n].arma.nome_arma=nomi_armi[randomArma]; //assegno il nome dell'arma
         if(randomArma==0){//se l'arma è un coltello
-            nemici[n].arma.potenza=25; //le assegno una potenza fissa di 15
+            nemici[n].arma.potenza=25; //le assegno una potenza fissa di 25
         }else if(randomArma==1){//se l'arma è una spada
-            nemici[n].arma.potenza=PotenzaArma;
+            nemici[n].arma.potenza=minPotenzaArma + rand() % (maxPotenzaArma - minPotenzaArma + 1);
         }
         randomRiga=0+rand()%(righe-1); //genero una riga a caso
         //la riga la posso assegnare subito senza controlli perchè il numero di nemici in ogni riga sarà sempre minore della sua lunghezza(il numero di colonne)
@@ -1098,7 +1109,7 @@ void stampaMappa(){
                 printf("\t\t");
             }
             if(giocatore->vita<=15){
-                printf("ATTENTION YOUR HEALTH IS VERY LOW!Check the hints by pressing 'h' or 'hint'");
+                printf("ATTENTION YOUR HEALTH IS VERY LOW!");
             }
         }
         printf("\n\n");
@@ -1119,9 +1130,9 @@ void inizializzaVarGlobali(int mode){
         numMinOstacoli=0,numMaxOstacoli=2;
         numeroNemici=4;
         minVitaNemici=20,maxVitaNemici=40;
-        PotenzaArma=30;
-        minCureMappa=3,maxCureMappa=6;
-        minArmiMappa=3, maxArmiMappa=6; //potenziatore armi
+        minPotenzaArma=20,maxPotenzaArma=60;
+        minCureMappa=2,maxCureMappa=5;
+        minArmiMappa=2, maxArmiMappa=5; //potenziatore armi
         puntiVitaGiocatore=60;
         minDannoSubito=10,maxDannoSubito=20;
         cds=1;
@@ -1131,9 +1142,9 @@ void inizializzaVarGlobali(int mode){
         numeroNemici=6;
         numMinOstacoli=1,numMaxOstacoli=4;
         minVitaNemici=40,maxVitaNemici=60; 
-        PotenzaArma=40;
-        minCureMappa=5,maxCureMappa=8;
-        minArmiMappa=5, maxArmiMappa=8; 
+        minPotenzaArma=40,maxPotenzaArma=80;
+        minCureMappa=5,maxCureMappa=7;
+        minArmiMappa=3, maxArmiMappa=5; 
         puntiVitaGiocatore=40;
         minDannoSubito=15,maxDannoSubito=30;
         cds=2;
@@ -1141,11 +1152,11 @@ void inizializzaVarGlobali(int mode){
         righe=20;
         colonne=20;
         numeroNemici=10;
-        numMinOstacoli=3,numMaxOstacoli=6;
+        numMinOstacoli=3,numMaxOstacoli=6; //range of obstacles number for each row
         minVitaNemici=60,maxVitaNemici=80; 
-        PotenzaArma=50;
-        minCureMappa=6,maxCureMappa=10;
-        minArmiMappa=6, maxArmiMappa=10;
+        minPotenzaArma=60, maxPotenzaArma=100;
+        minCureMappa=6,maxCureMappa=8;
+        minArmiMappa=4, maxArmiMappa=6;
         puntiVitaGiocatore=30;
         minDannoSubito=20,maxDannoSubito=40;
         cds=2;
