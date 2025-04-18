@@ -20,8 +20,8 @@ ________________________________________________________________________________
 	.to select the item's type weapon booster digit: "weapon", "we", "weapon booster", "weapon enhancer", "wb","wp"				|	
 	  (example:WE 15, W 16, Weapon 20);													|
 	     																	|	
--Once you have killed an enemy you can take his weapon with the commands:"sub","switch","swap","sw"						|																							|
--If you are stuck and need some help type "hint", "h" or "advice" to receive some advices 							| 																							|
--QUIT THE GAME:Q/Quit/Exit															|																							|
+-Once you have killed an enemy you can take his weapon with the commands:"sub","switch","swap","sw"						|																				|																				|
+-If you are stuck and need some help type "hint", "h" or "advice" to receive some advices 							| 																				|																				|
+-QUIT THE GAME:Q/Quit/Exit															|																				|																				|
 *Note each command is case insensitive(sub or sUB are both acceptable)          								|
 _______________________________________________________________________________________________________________________________________________	|
