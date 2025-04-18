@@ -85,83 +85,82 @@ int main(){
             if(executeCommand(percorso)==1){}//se è stato eseguito un comando
             else if(executeCommand(percorso)==0){ //se è stato richiesto uno spostamento
                 while(contSegno<lunPercorso && move==0 && sopravvisuto==true){ //esco dal ciclo se ho finito il percorso, incontro un ostacolo o muoio
-                    if(giocatore->vita<=0){
-                        system(CLEAR_SCREEN);
-                        printf("You did too many steps, you just died, the next time be more careful when you choose the paths!\n");
-                        Sleep(3500);
-                        sopravvisuto=false;
-                    }else{
-                        warnings.numNemiciVicini=0;
-                        move=spostati(percorso[contSegno]);
-                        nemiciVicini=controllaNemiciVicini(&warnings.numNemiciVicini);
-                        if(warnings.numNemiciVicini>0){
-                            warnings.close_enemies=true;
+                    warnings.numNemiciVicini=0;
+                    move=spostati(percorso[contSegno]);
+                    nemiciVicini=controllaNemiciVicini(&warnings.numNemiciVicini);
+                    if(warnings.numNemiciVicini>0){
+                        warnings.close_enemies=true;
+                    }
+                    if(move==4){//se c'è un nemico nella celle dove si vuole spostare il giocatore (4
+                        int nemiciAffrontati=0;
+                        if(warnings.numNemiciVicini>1){
+                            printf("If you want to proceed in that direction you have to face all the %d enemies close !\n",warnings.numNemiciVicini);
+                        }else if(warnings.numNemiciVicini==1){
+                            printf("If you want to proceed in that direction you have to face the enemy in front of you!\n");
                         }
-                        if(move==4){//se c'è un nemico nella celle dove si vuole spostare il giocatore (4
-                            int nemiciAffrontati=0;
-                            if(warnings.numNemiciVicini>1){
-                                printf("If you want to proceed in that direction you have to face all the %d enemies close !\n",warnings.numNemiciVicini);
-                            }else if(warnings.numNemiciVicini==1){
-                                printf("If you want to proceed in that direction you have to face the enemy in front of you!\n");
+                        while(sopravvisuto==true && nemiciAffrontati<warnings.numNemiciVicini){
+                            checkWeapons(); 
+                            printDisegno(disegno[DUELLO],0);
+                            printf("\nFight in progress...\n");
+                            SLEEP(4000);
+                            if(uccidiNemico(nemiciVicini[nemiciAffrontati])==false){
+                                sopravvisuto=false;
+                                printf("The enemy killed you :-c \n");
+                            }else{
+                                printf("Enemy killed!.\n");
+                                warnings.nemiciRimasti--;
+                                nemiciAffrontati++;
                             }
-                            while(sopravvisuto==true && nemiciAffrontati<warnings.numNemiciVicini){
-                                checkWeapons(); 
-                                printDisegno(disegno[DUELLO],0);
-                                printf("\nFight in progress...\n");
-                                SLEEP(4000);
-                                if(uccidiNemico(nemiciVicini[nemiciAffrontati])==false){
-                                    sopravvisuto=false;
-                                    printf("The enemy killed you :-c \n");
-                                }else{
-                                    printf("Enemy killed!.\n");
-                                    warnings.nemiciRimasti--;
-                                    nemiciAffrontati++;
-                                }
-                                SLEEP(2000);
-                            }
-                            free(nemiciVicini); //dealloco array 
-                            if(sopravvisuto==true){//se sono sopravvissuto vuol dire che ho ucciso tutti i nemici vicini
-                                warnings.close_enemies=false; //quindi nemici vicini diventa false
-                            }
+                            SLEEP(2000);
                         }
-                        if(move==0){ //se non ci sono impedenze  controllo se ci sono oggetti da raccogliere
-                            itemRaccolto=false;
-                            if(oggettoPresente()==2){ // se l'oggetto è una cura
-                                obj[numOggettiRaccolti].cura=(Cura*)returnOggetto(TIPO_CURA); //ritorna dove si trova l'oggetto cura in memoria(nell'array di cura)
-                                raccogliOggetto(&giocatore->zaino,&obj[numOggettiRaccolti],TIPO_CURA);
-                                mappa[obj[numOggettiRaccolti].cura->pos.r][obj[numOggettiRaccolti].cura->pos.c]=0; //tolgo
-                                itemRaccolto=true;
-                            }else if(oggettoPresente()==3){ //se l'oggetto è un potenziatore d'arma
-                                obj[numOggettiRaccolti].potArma=(PotenziatoreArma*)returnOggetto(TIPO_ARMA);
-                                raccogliOggetto(&giocatore->zaino,&obj[numOggettiRaccolti],TIPO_ARMA);
-                                mappa[obj[numOggettiRaccolti].potArma->pos.r][obj[numOggettiRaccolti].potArma->pos.c]=0; //tolgo l'arma nella posizione attuale
-                                itemRaccolto=true;
-                            }
-                            if(itemRaccolto==true){
-                                numOggettiRaccolti++;
-                            }
+                        free(nemiciVicini); //dealloco array 
+                        if(sopravvisuto==true){//se sono sopravvissuto vuol dire che ho ucciso tutti i nemici vicini
+                            warnings.close_enemies=false; //quindi nemici vicini diventa false
                         }
-                        else{ //se ci sono impedenze
-                            if(move==1){ //controllo se l'impedenza sia un ostacolo
-                                printf("You have an obstacle in front of you.\n");
-                            }
+                    }
+                    if(move==0){ //se non ci sono impedenze  controllo se ci sono oggetti da raccogliere
+                        itemRaccolto=false;
+                        if(oggettoPresente()==2){ // se l'oggetto è una cura
+                            obj[numOggettiRaccolti].cura=(Cura*)returnOggetto(TIPO_CURA); //ritorna dove si trova l'oggetto cura in memoria(nell'array di cura)
+                            raccogliOggetto(&giocatore->zaino,&obj[numOggettiRaccolti],TIPO_CURA);
+                            mappa[obj[numOggettiRaccolti].cura->pos.r][obj[numOggettiRaccolti].cura->pos.c]=0; //tolgo
+                            itemRaccolto=true;
+                        }else if(oggettoPresente()==3){ //se l'oggetto è un potenziatore d'arma
+                            obj[numOggettiRaccolti].potArma=(PotenziatoreArma*)returnOggetto(TIPO_ARMA);
+                            raccogliOggetto(&giocatore->zaino,&obj[numOggettiRaccolti],TIPO_ARMA);
+                            mappa[obj[numOggettiRaccolti].potArma->pos.r][obj[numOggettiRaccolti].potArma->pos.c]=0; //tolgo l'arma nella posizione attuale
+                            itemRaccolto=true;
                         }
-                        contSegno++;
-                        if(move!=0 || itemRaccolto==true){ //se  ci sono ostacoli/nemici oppure ho raccolto qualche oggetto
-                            SLEEP(2000); // prima di pulire lo schermo faccio una pausa di n secondi di modo da dare il tempo all'utente di leggere cosa è avvenuto durante lo spostamento
+                        if(itemRaccolto==true){
+                            numOggettiRaccolti++;
                         }
-                        if(move!=-2){
-                            giocatore->vita--; //for each movement the player decrease 1 life's point
+                    }
+                    else{ //se ci sono impedenze
+                        if(move==1){ //controllo se l'impedenza sia un ostacolo
+                            printf("You have an obstacle in front of you.\n");
+                        }
+                    }
+                    contSegno++;
+                    if(move!=0 || itemRaccolto==true){ //se  ci sono ostacoli/nemici oppure ho raccolto qualche oggetto
+                        SLEEP(2000); // prima di pulire lo schermo faccio una pausa di n secondi di modo da dare il tempo all'utente di leggere cosa è avvenuto durante lo spostamento
+                    }
+                    if(move!=-2){
+                        giocatore->vita--; //for each movement the player decrease 1 life's point
+                        if(giocatore->vita<=0){
                             system(CLEAR_SCREEN);
-                            stampaMappa();
-                            if(lunPercorso>1){
-                                Sleep(700);
-                            }
+                            printf("You did too many steps, you just died, the next time be more careful when you choose the paths!\n");
+                            Sleep(6000);
+                            sopravvisuto=false;
+                        }
+                        system(CLEAR_SCREEN);
+                        stampaMappa();
+                        if(lunPercorso>1){
+                            Sleep(700);
                         }
                     }
                 }
             }else if(executeCommand(percorso)==-1){ //if the user wants to quit the game
-                printf("Quitting the game...\n");
+                printf("Quitting the match...\n");
                 sopravvisuto=false;
                 Sleep(1000);
             }
@@ -202,6 +201,7 @@ int main(){
         }
         if(newGame==false){
             printDisegno(disegno[GAMEOVER],0);//stampa game over in ascii art, 0 per dire stampa il disegno intero
+            Sleep(5000);
         }else{ //if there is a new match we need to deallocate all the memory allocated dynamically
             freeAll(); 
         }
