@@ -16,7 +16,7 @@ ________________________________________________________________________________
 -Legend:L/(you can execute this command everywhere to open this page);										|
 -to check all the items founded open your backpack typing:"bp","backpack" or "back pack" and :							|
 	.to select the item's type cure digit: "med", "medication", "hb", "health", "health booster","cure"					|
-	 (example:Med 15);															|
+	 (example:Med 15);															|                
 	.to select the item's type weapon booster digit: "weapon", "we", "weapon booster", "weapon enhancer", "wb","wp"				|	
 	  (example:WE 15, W 16, Weapon 20);													|
 	     																	|	
