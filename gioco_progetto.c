@@ -155,7 +155,7 @@ int main(){
                         system(CLEAR_SCREEN);
                         stampaMappa();
                         if(lunPercorso>1){
-                            Sleep(700);
+                            Sleep(400);
                         }
                     }
                 }
@@ -305,7 +305,7 @@ int executeCommand(char*percorso){ //returns 1 if the move is command, -1 if the
     for(int t=0;t<strlen(percorso);t++){
         percorso[t]=tolower(percorso[t]); //converto in minuscolo
     }
-    if(strcmp(percorso,"l")==0){
+    if(strcmp(percorso,"l")==0 || strcmp(percorso,"legend")==0 || strcmp(percorso,"commands")==0 || strcmp(percorso,"command")==0){
         system(CLEAR_SCREEN);
         stampaLegenda(fileCommands);
         executedCommand=1;
