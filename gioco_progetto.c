@@ -72,6 +72,11 @@ int main(){
         bool sopravvisuto=true;
         OggettoUnion obj[numero_armi+numero_cure];//tutti gli oggetti da raccogliere
         int conta=0;
+        warnings.close_enemies=false;
+        int* nemiciVicini=controllaNemiciVicini(&warnings.numNemiciVicini);
+        if(warnings.numNemiciVicini>0){
+            warnings.close_enemies=true;
+        }
         stampaMappa();
         while(sopravvisuto==true && warnings.nemiciRimasti>0 ){
             printf("[:]>   ");
@@ -79,7 +84,6 @@ int main(){
             int contSegno=0;
             int move=0;
             int lunPercorso=strlen(percorso);
-            int*nemiciVicini;
             bool itemRaccolto; //variabile che segnale se è stato raccolto un item per ogni spostamento
             warnings.close_enemies=false;
             if(executeCommand(percorso)==1){}//se è stato eseguito un comando
@@ -191,7 +195,7 @@ int main(){
             if(strcasecmp(answernewGame,"yes")==0 || strcasecmp(answernewGame,"y")==0 || strcasecmp(answernewGame,"yep")==0 || strcasecmp(answernewGame,"yeah")==0 ){
                 newGame=true;
                 askAgain=false;
-            }else if(strcasecmp(answernewGame,"no")==0 || strcasecmp(answernewGame,"not")==0 || strcasecmp(answernewGame,"nah")==0 || strcasecmp(answernewGame,"nope")==0){
+            }else if(strcasecmp(answernewGame,"no")==0 || strcasecmp(answernewGame,"n")==0 || strcasecmp(answernewGame,"nah")==0 || strcasecmp(answernewGame,"nope")==0){
                 newGame=false;
                 askAgain=false;
             }else{
