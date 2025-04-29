@@ -146,8 +146,8 @@ int main(){
                     }
                     if(move!=-2){
                         giocatore->vita--; //for each movement the player decrease 1 life's point
-                        if(giocatore->vita<=0){
-                            system(CLEAR_SCREEN);
+                        if(giocatore->vita<=0 && sopravvisuto==true){//the second condition to avoid this message in case the player lose life due to a fight and not for too many steps
+                            system(CLEAR_SCREEN); 
                             printf("You did too many steps, you just died, the next time be more careful when you choose the paths!\n");
                             Sleep(6000);
                             sopravvisuto=false;
@@ -188,14 +188,14 @@ int main(){
         while(askAgain==true){
             fgets(answernewGame, 20, stdin);
             answernewGame[strcspn(answernewGame, "\n")] = '\0'; // remove newline
-            if(strcasecmp(answernewGame,"yes")==0 || strcasecmp(answernewGame,"y")==0 || strcasecmp(answernewGame,"yep")==0 ){
+            if(strcasecmp(answernewGame,"yes")==0 || strcasecmp(answernewGame,"y")==0 || strcasecmp(answernewGame,"yep")==0 || strcasecmp(answernewGame,"yeah")==0 ){
                 newGame=true;
                 askAgain=false;
             }else if(strcasecmp(answernewGame,"no")==0 || strcasecmp(answernewGame,"not")==0 || strcasecmp(answernewGame,"nah")==0 || strcasecmp(answernewGame,"nope")==0){
                 newGame=false;
                 askAgain=false;
             }else{
-                printf("Type 'yes','y' or 'yep' to play a new game or 'no','n', 'nah' or 'nope' to quit>");
+                printf("Type 'yes','y','yep' or 'yeah' to play a new game or 'no','n', 'nah' or 'nope' to quit>");
                 askAgain=true;
             }
         }
@@ -448,11 +448,11 @@ void printGiocatore(int nrsg){
         printf("|You are at the coordinates %c %d (*)",riga,giocatore->pos.c);
         printf("  \t\t ");
     }else if(nrsg==3){
-        printf("|life's points:%d",giocatore->vita);
+        printf("|life's points:%d/100",giocatore->vita);
         printf("  Number of Items collected:%d",numOggettiRaccolti);
     }else if(nrsg==4){
         printf("|Type of weapon:%s     ",giocatore->arma.nome_arma);
-        printf("Weapon's Power:%d   ",giocatore->arma.potenza);
+        printf("Weapon's Power:%d/100   ",giocatore->arma.potenza);
     }
 
 
@@ -645,10 +645,10 @@ int spostati(char direction){
                 }
             }
         }
-        if(mappa[gr+spostaRiga][gc+spostaColonna]==1){ //se nel percorso del giocatore c'è un ostacolo e/o un nemico
+        if(mappa[gr+spostaRiga][gc+spostaColonna]==1){ //se nel percorso del giocatore c'è un ostacolo 
             return 1; //ritorno 1 per dire che non devo più spostarmi e ignorare le direzioni successive
-        }else if(nemicoPresente==true){
-            return 4;
+        }else if(nemicoPresente==true){ //se c'è un nemico
+            return 4; //ritorno 4 
         }
         else{ //altrimenti faccio spostare il giocatore aggiornando le cordinate della sua posizione 
             giocatore->pos.r=gr+spostaRiga;
@@ -677,7 +677,7 @@ Giocatore* generaGiocatore(int**mappa){
     Giocatore*giocatore=(Giocatore*)calloc(1,sizeof(Giocatore));
     int c;
     while ((c = getchar()) != '\n' && c != EOF);  // svuota stdin
-    giocatore->nome = malloc(100 * sizeof(char));
+    giocatore->nome = malloc(20 * sizeof(char));
     printf("What's your name?");
     scanf("%s", giocatore->nome);
     giocatore->arma.id=1;
@@ -1159,7 +1159,7 @@ void inizializzaVarGlobali(int mode){
         numeroNemici=6;
         numMinOstacoli=1,numMaxOstacoli=4;
         minVitaNemici=40,maxVitaNemici=60; 
-        minPotenzaArma=40,maxPotenzaArma=80;
+        minPotenzaArma=25,maxPotenzaArma=100;
         minCureMappa=5,maxCureMappa=7;
         minArmiMappa=3, maxArmiMappa=5; 
         puntiVitaGiocatore=40;
@@ -1171,7 +1171,7 @@ void inizializzaVarGlobali(int mode){
         numeroNemici=10;
         numMinOstacoli=3,numMaxOstacoli=6; //range of obstacles number for each row
         minVitaNemici=60,maxVitaNemici=80; 
-        minPotenzaArma=60, maxPotenzaArma=100;
+        minPotenzaArma=25, maxPotenzaArma=100;
         minCureMappa=6,maxCureMappa=8;
         minArmiMappa=4, maxArmiMappa=6;
         puntiVitaGiocatore=30;
